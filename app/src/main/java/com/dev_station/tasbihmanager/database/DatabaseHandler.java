@@ -17,6 +17,8 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
+    static DatabaseHandler instance = null;
+    static SQLiteDatabase database = null;
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
@@ -31,7 +33,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_TOTAL = "total";
 
 
+    public static void init(Context context) {
+        if (null == instance) {
+            instance = new DatabaseHandler(context);
+        }
+    }
 
+    public static DatabaseHandler getInstance(Context context) {
+        if (null == instance) {
+            instance = new DatabaseHandler(context);
+        }
+        return instance;
+    }
+
+    public static SQLiteDatabase getDatabase() {
+        if (null == database) {
+            database = instance.getWritableDatabase();
+        }
+        return database;
+    }
+
+    public static void deactivate() {
+        if (null != database && database.isOpen()) {
+            database.close();
+        }
+        database = null;
+        instance = null;
+    }
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,6 +72,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_NAME + " TEXT PRIMARY KEY,"
                 + KEY_TOTAL + " INTEGER" + ")";
         db.execSQL(CREATE_TASBIH_TABLE);
+        db.execSQL("INSERT INTO tasbih VALUES ('Subhan Allah',0)");
+        db.execSQL("INSERT INTO tasbih VALUES ('Alhamdulillah',0)");
+        db.execSQL("INSERT INTO tasbih VALUES ('Allahu Akbar',0)");
 
     }
 
@@ -57,25 +88,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
+
     // Adding new item
    public void addTasbihItem(TasbihItem tasbihItem) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, tasbihItem.getItemName()); // Contact Name
-        values.put(KEY_TOTAL, tasbihItem.getTotal()); // Contact Phone
+        values.put(KEY_NAME, tasbihItem.getItemName()); // Item Name
+        values.put(KEY_TOTAL, tasbihItem.getTotal()); // Total
 
         // Inserting Row
         db.insert(TABLE_TASBIH, null, values);
         db.close(); // Closing database connection
     }
 
-    public List<TasbihItem> getAllContacts() {
+    public static List<TasbihItem> getAllContacts() {
         List<TasbihItem> contactList = new ArrayList<TasbihItem>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_TASBIH;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list

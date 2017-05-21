@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.dev_station.tasbihmanager.R;
+import com.dev_station.tasbihmanager.model.TasbihItem;
+
+import java.util.List;
 
 /**
  * Created by Abdullah Shekhar on 5/20/2017.
@@ -17,19 +20,16 @@ public class TasbihItemListAdapter extends ArrayAdapter {
     //to reference the Activity
     private final Activity context;
 
-    //to store the animal images
-    private int total;
+    List<TasbihItem> tasbihItems;
 
-    //to store the list of Tashbih item
-    private final String[] nameArray;
 
-    public TasbihItemListAdapter(Activity context, String[] nameArrayParam, int totalParam){
+    public TasbihItemListAdapter(Activity context, List<TasbihItem> tasbihItems){
 
-        super(context, R.layout.list_item , nameArrayParam);
+        super(context, R.layout.list_item , tasbihItems);
 
         this.context=context;
-        this.total = totalParam;
-        this.nameArray = nameArrayParam;
+
+        this.tasbihItems=tasbihItems;
 
 
     }
@@ -38,15 +38,15 @@ public class TasbihItemListAdapter extends ArrayAdapter {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.list_item, null,true);
 
-        total=total+1;
 
         //this code gets references to objects in the listview_row.xml file
         TextView nameTextField = (TextView) rowView.findViewById(R.id.tvItemName);
         TextView totalTextField = (TextView) rowView.findViewById(R.id.tvTotal);
 
         //this code sets the values of the objects to values from the arrays
-        nameTextField.setText(nameArray[position]);
-        totalTextField.setText(String.valueOf(total));
+
+        nameTextField.setText(tasbihItems.get(position).getItemName());
+        totalTextField.setText(String.valueOf(tasbihItems.get(position).getTotal()));
 
         return rowView;
 

@@ -13,16 +13,12 @@ import android.widget.ListView;
 
 import com.dev_station.tasbihmanager.R;
 import com.dev_station.tasbihmanager.adapter.TasbihItemListAdapter;
-import com.dev_station.tasbihmanager.database.DatabaseHandler;
+import com.dev_station.tasbihmanager.database.Database;
 import com.dev_station.tasbihmanager.model.TasbihItem;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    String[] nameArray = {"Allah","Ar-Rahman","Ar-Raheem","Al-Malik","Al-Quddus","As-Salaam" };
-
-    int total=0;
 
     ListView listView;
 
@@ -31,27 +27,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DatabaseHandler db = new DatabaseHandler(this);
-        db.addTasbihItem(new TasbihItem("Subhan Allah",0));
-        db.addTasbihItem(new TasbihItem("Subhan Allah1",0));
-        db.addTasbihItem(new TasbihItem("Subhan Allah1",0));
-        db.addTasbihItem(new TasbihItem("Alhamdulillah",0));
-        db.addTasbihItem(new TasbihItem("Allahu Akbar",0));
-        List<TasbihItem> contacts = db.getAllContacts();
+        Log.i("Test: ", "This is test");
+        Log.d("Name: ", "Log d using");
 
-        int i=0;
+        Database.init(MainActivity.this);
 
-        for (TasbihItem cn : contacts) {
 
-            String n=cn.getItemName();
-            String log = "Item Name: "+n+" ,Total: " + cn.getTotal();
-            nameArray[i]=n;
-            i=i+1;
-            // Writing Contacts to log
-            Log.d("Name: ", log);
-        }
+        final List<TasbihItem> allTasbihItems = Database.getAll();
 
-        TasbihItemListAdapter tasbihItemListAdapter = new TasbihItemListAdapter(this, nameArray, total);
+
+        TasbihItemListAdapter tasbihItemListAdapter = new TasbihItemListAdapter(this,allTasbihItems);
         listView = (ListView) findViewById(R.id.tasbihListView);
         listView.setAdapter(tasbihItemListAdapter);
 
@@ -61,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
                                     long id) {
                 Intent intent = new Intent(MainActivity.this, EditTasbihItemActivity.class);
                 //String name = nameArray[position];
-                String name=parent.getItemAtPosition(position).toString();
+                String name=allTasbihItems.get(position).getItemName();
                 intent.putExtra("Name of Allah", name);
-                int reciteTotal = total;
+                int reciteTotal = allTasbihItems.get(position).getTotal();;
                 intent.putExtra("total", reciteTotal);
                 startActivity(intent);
 
