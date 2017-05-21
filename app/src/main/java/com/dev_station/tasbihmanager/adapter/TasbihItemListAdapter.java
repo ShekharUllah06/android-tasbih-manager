@@ -18,7 +18,7 @@ public class TasbihItemListAdapter extends ArrayAdapter {
     private final Activity context;
 
     //to store the animal images
-    private final int total;
+    private int total;
 
     //to store the list of Tashbih item
     private final String[] nameArray;
@@ -37,6 +37,8 @@ public class TasbihItemListAdapter extends ArrayAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.list_item, null,true);
+
+        total=total+1;
 
         //this code gets references to objects in the listview_row.xml file
         TextView nameTextField = (TextView) rowView.findViewById(R.id.tvItemName);
