@@ -4,18 +4,27 @@
     <!-- Single menu item
          Set id, icon and Title for each menu item
     -->
-    <item android:id="@+id/menu_bookmark"
-        android:title="Bookmark" />
 
-    <item android:id="@+id/menu_save"
-        android:title="Save" />
     <item android:id="@+id/menu_add"
-        android:title="Add"
+        android:title=""
+        android:icon="@drawable/glyphicons_432_plus"
         appcompat:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_item_rate"
+        android:title="@string/menu_item_rate"
+        android:icon="@drawable/glyphicons_049_star">
+    </item>
+    <item
+        android:id="@+id/menu_item_website"
+        android:icon="@drawable/glyphicons_340_globe"
+        android:title="@string/menu_item_website">
+    </item>
+    <item
+        android:id="@+id/menu_item_report"
+        android:title="@string/menu_item_report"
+        android:icon="@drawable/glyphicons_340_globe">
+    </item>
 
-    <item android:id="@+id/menu_edit"
-        android:title="Save"
-        appcompat:showAsAction="always"/>
 
 
 </menu>

@@ -67,14 +67,14 @@ public class Database extends SQLiteOpenHelper {
         cv.put(COLUMN_ITEM_NAME, tasbihItem.getItemName());
         cv.put(COLUMN_TOTAL, tasbihItem.getTotal());
 
-        return getDatabase().update(ALARM_TABLE, cv, "_id=" + tasbihItem.getItemName(), null);
+        return getDatabase().update(ALARM_TABLE, cv, "item_name='" + tasbihItem.getItemName()+"'", null);
     }
     public static int deleteEntry(TasbihItem tasbihItem){
         return deleteEntry(tasbihItem.getItemName());
     }
 
     public static int deleteEntry(String id){
-        return getDatabase().delete(ALARM_TABLE, COLUMN_ITEM_NAME + "=" + id, null);
+        return getDatabase().delete(ALARM_TABLE, COLUMN_ITEM_NAME + "='" + id+"'", null);
     }
 
     public static int deleteAll(){

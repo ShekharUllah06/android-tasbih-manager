@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">TasbihManager</string>
+    <string name="app_name">Tasbih Manager</string>
+    <string name="menu_item_rate">Rate on Google Play</string>
+    <string name="menu_item_website">Website</string>
+    <string name="menu_item_report">Report a Bug</string>
+    <string name="title_activity_base">BaseActivity</string>
 </resources>
