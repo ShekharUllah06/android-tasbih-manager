@@ -1,4 +1,4 @@
-package com.dev_station.tasbihmanager.database;
+package com.dev_station.dhikrmanager.database;
 
 /**
  * Created by Abdullah Shekhar on 5/21/2017.
@@ -10,7 +10,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.dev_station.tasbihmanager.model.TasbihItem;
+import com.dev_station.dhikrmanager.model.DhikrType;
+import com.dev_station.dhikrmanager.model.TasbihItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class Database extends SQLiteOpenHelper {
 
     public static final String COLUMN_ITEM_NAME = "item_name";
     public static final String COLUMN_TOTAL = "total";
+    public static final String COLUMN_TYPE = "type";
 
     public static void init(Context context) {
         if (null == instance) {
@@ -59,6 +61,8 @@ public class Database extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_ITEM_NAME, tasbihItem.getItemName());
         cv.put(COLUMN_TOTAL, tasbihItem.getTotal());
+        cv.put(COLUMN_TYPE, tasbihItem.getType());
+
 
         return getDatabase().insert(ALARM_TABLE, null, cv);
     }
@@ -67,14 +71,14 @@ public class Database extends SQLiteOpenHelper {
         cv.put(COLUMN_ITEM_NAME, tasbihItem.getItemName());
         cv.put(COLUMN_TOTAL, tasbihItem.getTotal());
 
-        return getDatabase().update(ALARM_TABLE, cv, "item_name='" + tasbihItem.getItemName()+"'", null);
+        return getDatabase().update(ALARM_TABLE, cv, "item_name='" + tasbihItem.getItemName()+"' AND "+COLUMN_TYPE+"='"+tasbihItem.getType()+"'", null);
     }
     public static int deleteEntry(TasbihItem tasbihItem){
-        return deleteEntry(tasbihItem.getItemName());
+        return deleteEntry(tasbihItem.getItemName(),tasbihItem.getType());
     }
 
-    public static int deleteEntry(String id){
-        return getDatabase().delete(ALARM_TABLE, COLUMN_ITEM_NAME + "='" + id+"'", null);
+    public static int deleteEntry(String id,String type){
+        return getDatabase().delete(ALARM_TABLE, COLUMN_ITEM_NAME + "='" + id+"' AND "+COLUMN_TYPE+"='"+type+"'", null);
     }
 
     public static int deleteAll(){
@@ -150,13 +154,16 @@ public class Database extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " + ALARM_TABLE + " ( "
-                + COLUMN_ITEM_NAME + " TEXT primary key, "
-                + COLUMN_TOTAL + " INTEGER" + ")"
+                + COLUMN_ITEM_NAME + " TEXT, "
+                + COLUMN_TOTAL + " INTEGER, "
+                + COLUMN_TYPE + " TEXT, "
+                + "PRIMARY KEY ("+COLUMN_ITEM_NAME+","+ COLUMN_TYPE+")"
+                        +")"
                 );
 
-        db.execSQL("INSERT INTO tasbih VALUES ('Subhan Allah',0)");
-        db.execSQL("INSERT INTO tasbih VALUES ('Alhamdulillah',0)");
-        db.execSQL("INSERT INTO tasbih VALUES ('Allahu Akbar',0)");
+        db.execSQL("INSERT INTO tasbih VALUES ('Subhan Allah',0,'"+ DhikrType.TASBIH+"')");
+        db.execSQL("INSERT INTO tasbih VALUES ('Alhamdulillah',0,'"+DhikrType.TAHMID+"')");
+        db.execSQL("INSERT INTO tasbih VALUES ('Allahu Akbar',0,'"+DhikrType.TAKBIR+"')");
     }
 
     @Override
@@ -165,10 +172,18 @@ public class Database extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public static List<TasbihItem> getAll() {
+    public static int getTotalRow(String dhikrType){
+        String selectQuery = "SELECT * FROM " + ALARM_TABLE + " WHERE "+COLUMN_TYPE+"='"+dhikrType+"'";
+        SQLiteDatabase db = getDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        return cursor.getCount();
+    }
+
+    public static List<TasbihItem> getAll(String dhikrType) {
         List<TasbihItem> contactList = new ArrayList<TasbihItem>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + ALARM_TABLE;
+        //String selectQuery = "SELECT  * FROM " + ALARM_TABLE;
+        String selectQuery = "SELECT * FROM " + ALARM_TABLE + " WHERE "+COLUMN_TYPE+"='"+dhikrType+"'";
 
         SQLiteDatabase db = getDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

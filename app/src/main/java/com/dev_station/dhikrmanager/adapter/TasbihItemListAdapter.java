@@ -1,4 +1,4 @@
-package com.dev_station.tasbihmanager.adapter;
+package com.dev_station.dhikrmanager.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.dev_station.tasbihmanager.R;
-import com.dev_station.tasbihmanager.model.TasbihItem;
+import com.dev_station.dhikrmanager.R;
+import com.dev_station.dhikrmanager.model.TasbihItem;
 
 import java.util.List;
 

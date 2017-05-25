@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dev_station.dhikrmanager.activity.MainActivity"
+    tools:context="com.dev_station.dhikrmanager.activity.ItemListActivity"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvNoItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dhikr Items" />
+        android:text="No Item Found" />
 
     <ListView
         android:id="@+id/tasbihListView"
@@ -19,4 +19,5 @@
         android:layout_height="495dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />
+
 </LinearLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dev_station.tasbihmanager.activity.AddItemActivity"
+    tools:context="com.dev_station.dhikrmanager.activity.AddItemActivity"
     android:orientation="vertical">
 
 

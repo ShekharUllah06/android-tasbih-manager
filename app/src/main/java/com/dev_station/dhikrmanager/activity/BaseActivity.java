@@ -1,4 +1,4 @@
-package com.dev_station.tasbihmanager.activity;
+package com.dev_station.dhikrmanager.activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.ViewConfiguration;
 import android.widget.Toast;
 
-import com.dev_station.tasbihmanager.R;
+import com.dev_station.dhikrmanager.R;
 
 import java.lang.reflect.Field;
 

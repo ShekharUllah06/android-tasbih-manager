@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dev_station.tasbihmanager">
+    package="com.dev_station.dhikrmanager">
+
     <uses-sdk android:minSdkVersion="5" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +24,7 @@
         </activity>
         <activity android:name=".activity.EditTasbihItemActivity" />
         <activity android:name=".activity.AddItemActivity" />
+        <activity android:name=".activity.ItemListActivity"></activity>
     </application>
 
 </manifest>

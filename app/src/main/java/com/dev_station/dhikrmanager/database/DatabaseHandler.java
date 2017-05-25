@@ -1,4 +1,4 @@
-package com.dev_station.tasbihmanager.database;
+package com.dev_station.dhikrmanager.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.dev_station.tasbihmanager.model.TasbihItem;
+import com.dev_station.dhikrmanager.model.TasbihItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "tasbihmanager";
+    private static final String DATABASE_NAME = "dhikrmanager";
 
     // Contacts table name
     private static final String TABLE_TASBIH = "tasbih";

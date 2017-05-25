@@ -1,4 +1,4 @@
-package com.dev_station.tasbihmanager.activity;
+package com.dev_station.dhikrmanager.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,11 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.dev_station.tasbihmanager.R;
-import com.dev_station.tasbihmanager.database.Database;
-import com.dev_station.tasbihmanager.model.TasbihItem;
+import com.dev_station.dhikrmanager.R;
+import com.dev_station.dhikrmanager.database.Database;
+import com.dev_station.dhikrmanager.model.TasbihItem;
 
 public class EditTasbihItemActivity extends BaseActivity {
+
+    String dhikrType="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,9 @@ public class EditTasbihItemActivity extends BaseActivity {
         txtTotal.setText(String.valueOf(total));
         txtTotal.setEnabled(false);
 
+        dhikrType=getIntent().getStringExtra("DhikirType");;
+
+
         final Button btnSave = (Button)findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -49,9 +54,12 @@ public class EditTasbihItemActivity extends BaseActivity {
                     TasbihItem ti = new TasbihItem();
                     ti.setItemName(txtName.getText().toString());
                     ti.setTotal(Integer.parseInt(txtTotal.getText().toString())+Integer.parseInt(txtNewRecited.getText().toString()));
+                    ti.setType(dhikrType);
                     Database.update(ti);
-                    Intent mintent = new Intent(EditTasbihItemActivity.this, MainActivity.class);
+                    Intent mintent = new Intent(EditTasbihItemActivity.this, ItemListActivity.class);
+                    mintent.putExtra("DhikirType", dhikrType);
                     startActivity(mintent);
+
                     finish();
                 }
             }
@@ -76,9 +84,12 @@ public class EditTasbihItemActivity extends BaseActivity {
                             TasbihItem ti = new TasbihItem();
                             ti.setItemName(txtName.getText().toString());
                             ti.setTotal(0);
+                            ti.setType(dhikrType);
                             Database.update(ti);
-                            Intent mintent = new Intent(EditTasbihItemActivity.this, MainActivity.class);
+                            Intent mintent = new Intent(EditTasbihItemActivity.this, ItemListActivity.class);
+                            mintent.putExtra("DhikirType", dhikrType);
                             startActivity(mintent);
+
                             finish();
 
                     }
@@ -103,8 +114,10 @@ public class EditTasbihItemActivity extends BaseActivity {
         switch (item.getItemId())
         {
             case android.R.id.home:
-                Intent mintent = new Intent(EditTasbihItemActivity.this, MainActivity.class);
+                Intent mintent = new Intent(EditTasbihItemActivity.this, ItemListActivity.class);
+                mintent.putExtra("DhikirType", dhikrType);
                 startActivity(mintent);
+
                 finish();
                 return true;
 

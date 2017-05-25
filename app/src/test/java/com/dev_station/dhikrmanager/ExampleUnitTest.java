@@ -1,4 +1,4 @@
-package com.dev_station.tasbihmanager;
+package com.dev_station.dhikrmanager;
 
 import org.junit.Test;
 

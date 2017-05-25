@@ -1,4 +1,4 @@
-package com.dev_station.tasbihmanager.activity;
+package com.dev_station.dhikrmanager.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.dev_station.tasbihmanager.R;
-import com.dev_station.tasbihmanager.database.Database;
-import com.dev_station.tasbihmanager.model.TasbihItem;
+import com.dev_station.dhikrmanager.R;
+import com.dev_station.dhikrmanager.database.Database;
+import com.dev_station.dhikrmanager.model.TasbihItem;
 
 public class AddItemActivity extends BaseActivity {
 
@@ -38,8 +38,10 @@ public class AddItemActivity extends BaseActivity {
                     TasbihItem ti = new TasbihItem();
                     ti.setItemName(txtName.getText().toString());
                     ti.setTotal(Integer.parseInt(txtTotal.getText().toString()));
+                    ti.setType(getIntent().getStringExtra("DhikirType"));
                     Database.create(ti);
                     Intent mintent = new Intent(AddItemActivity.this, MainActivity.class);
+                    mintent.putExtra("DhikirType", getIntent().getStringExtra("DhikirType"));
                     startActivity(mintent);
                     finish();
                 }
@@ -54,7 +56,8 @@ public class AddItemActivity extends BaseActivity {
         switch (item.getItemId())
         {
             case android.R.id.home:
-                Intent mintent = new Intent(AddItemActivity.this, MainActivity.class);
+                Intent mintent = new Intent(AddItemActivity.this, ItemListActivity.class);
+                mintent.putExtra("DhikirType", getIntent().getStringExtra("DhikirType"));
                 startActivity(mintent);
                 finish();
                 return true;

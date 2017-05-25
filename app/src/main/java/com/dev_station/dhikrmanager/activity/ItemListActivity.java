@@ -1,11 +1,11 @@
-package com.dev_station.tasbihmanager.activity;
+package com.dev_station.dhikrmanager.activity;
 
-import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,32 +17,39 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dev_station.tasbihmanager.R;
-import com.dev_station.tasbihmanager.adapter.TasbihItemListAdapter;
-import com.dev_station.tasbihmanager.database.Database;
-import com.dev_station.tasbihmanager.model.TasbihItem;
+import com.dev_station.dhikrmanager.R;
+import com.dev_station.dhikrmanager.adapter.TasbihItemListAdapter;
+import com.dev_station.dhikrmanager.database.Database;
+import com.dev_station.dhikrmanager.model.TasbihItem;
 
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+import static com.dev_station.dhikrmanager.R.id.tvNoItem;
+
+public class ItemListActivity extends AppCompatActivity {
 
     ListView listView;
+    String dhikrType="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_item_list);
 
-        Log.i("Test: ", "This is test");
-        Log.d("Name: ", "Log d using");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Database.init(MainActivity.this);
+        dhikrType = getIntent().getStringExtra("DhikirType");
+
+        Database.init(ItemListActivity.this);
 
 
-        final List<TasbihItem> allTasbihItems = Database.getAll();
+        final List<TasbihItem> allTasbihItems = Database.getAll(dhikrType);
+        TextView tvNoItem1=(TextView)findViewById(tvNoItem);
         if(allTasbihItems.size()>0){
-            TextView tvNoItem=(TextView)findViewById(R.id.tvNoItem);
-            tvNoItem.setText("Tasbih Item List");
+            tvNoItem1.setText(dhikrType+" Item List");
+        }else{
+            tvNoItem1.setText("No "+dhikrType+" Item Found");
         }
 
 
@@ -54,12 +61,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                Intent intent = new Intent(MainActivity.this, EditTasbihItemActivity.class);
+                Intent intent = new Intent(ItemListActivity.this, EditTasbihItemActivity.class);
                 //String name = nameArray[position];
                 String name=allTasbihItems.get(position).getItemName();
                 intent.putExtra("Name of Allah", name);
                 int reciteTotal = allTasbihItems.get(position).getTotal();
                 intent.putExtra("total", reciteTotal);
+                intent.putExtra("DhikirType", dhikrType);
                 startActivity(intent);
                 finish();
 
@@ -72,22 +80,27 @@ public class MainActivity extends BaseActivity {
                 view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
                 final String name=allTasbihItems.get(position).getItemName();
+                final String type=dhikrType;
 
-                Builder dialog = new Builder(MainActivity.this);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(ItemListActivity.this);
                 dialog.setTitle("Delete");
                 dialog.setMessage("Delete this item?");
-                dialog.setPositiveButton("Ok", new OnClickListener() {
+                dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        Database.init(MainActivity.this);
-                        Database.deleteEntry(name);
-                        Intent mintent = new Intent(MainActivity.this, MainActivity.class);
+                        TasbihItem t=new TasbihItem();
+                        t.setItemName(name);
+                        t.setType(type);
+                        Database.init(ItemListActivity.this);
+                        Database.deleteEntry(t);
+                        Intent mintent = new Intent(ItemListActivity.this, MainActivity.class);
+                        mintent.putExtra("DhikirType", dhikrType);
                         startActivity(mintent);
                         finish();
                     }
                 });
-                dialog.setNegativeButton("Cancel", new OnClickListener() {
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -99,8 +112,6 @@ public class MainActivity extends BaseActivity {
                 return true;
             }
         });
-
-
 
 
     }
@@ -125,7 +136,14 @@ public class MainActivity extends BaseActivity {
             case R.id.menu_add:
                 // Single menu item is selected do something
                 // Ex: launching new activity/screen or show alert message
-                Intent mintent = new Intent(MainActivity.this, AddItemActivity.class);
+                Intent addItemIntent = new Intent(ItemListActivity.this, AddItemActivity.class);
+                addItemIntent.putExtra("DhikirType", dhikrType);
+                startActivity(addItemIntent);
+                finish();
+                return true;
+
+            case android.R.id.home:
+                Intent mintent = new Intent(ItemListActivity.this, MainActivity.class);
                 startActivity(mintent);
                 finish();
                 return true;

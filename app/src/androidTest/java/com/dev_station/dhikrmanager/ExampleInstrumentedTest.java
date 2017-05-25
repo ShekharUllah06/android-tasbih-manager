@@ -1,4 +1,4 @@
-package com.dev_station.tasbihmanager;
+package com.dev_station.dhikrmanager;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.dev_station.tasbihmanager", appContext.getPackageName());
+        assertEquals("com.dev_station.dhikrmanager", appContext.getPackageName());
     }
 }
